@@ -1033,7 +1033,7 @@ func checkSignature(algo SignatureAlgorithm, signed, signature []byte, publicKey
 				X:     pub.X,
 				Y:     pub.Y,
 			}
-			if !Sm2Verify(sm2pub, signed, nil, ecdsaSig.R, ecdsaSig.S) {
+			if !Verify(sm2pub, fnHash(), ecdsaSig.R, ecdsaSig.S) {
 				return errors.New("x509: SM2 verification failure")
 			}
 		default:
@@ -2394,7 +2394,7 @@ func ParseCertificateRequest(asn1Data []byte) (*CertificateRequest, error) {
 
 func parseCertificateRequest(in *certificateRequest) (*CertificateRequest, error) {
 	out := &CertificateRequest{
-		Raw: in.Raw,
+		Raw:                      in.Raw,
 		RawTBSCertificateRequest: in.TBSCSR.Raw,
 		RawSubjectPublicKeyInfo:  in.TBSCSR.PublicKey.Raw,
 		RawSubject:               in.TBSCSR.Subject.FullBytes,
